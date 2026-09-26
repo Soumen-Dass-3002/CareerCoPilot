@@ -7,6 +7,7 @@ import ExploreCareers from "./pages/ExploreCareers";
 import CareerDetail from "./pages/CareerDetail";
 import CareerCompare from "./pages/CareerCompare";
 import { Applications, ATS, Colleges, Jobs, Profile, Resumes, Simulator } from "./pages/Platform";
+import Nova from "./pages/Nova";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/simulator" element={<Simulator />} />
         <Route path="/applications" element={<Applications />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/nova" element={<Nova />} />
 
         {/* Unknown URL → Dashboard */}
         <Route
