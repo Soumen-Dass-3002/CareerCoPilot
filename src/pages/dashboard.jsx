@@ -1,9 +1,217 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./dashboard.css";
 
-const starters=["Help me choose a career","Explore technology careers","What can I do after Class 12?"];
-const nav=[["Overview","grid","/"],["Ask Nova","compass","/nova"],["Career explorer","compass","/careers"],["College explorer","building","/colleges"],["Career paths","route","/simulator"],["Resume studio","file","/resumes"],["Opportunity hub","briefcase","/jobs"],["Applications","check","/applications"]];
-function Mark({small=false}){return <svg className={`infinity-mark ${small?"small":""}`} viewBox="0 0 64 38" aria-hidden="true"><path d="M3 19C8 7 18 7 26 19s18 12 23 0c5-12 14-12 18 0"/><path d="M3 19c5 12 15 12 23 0S44 7 49 19c5 12 14 12 18 0"/></svg>}
-function Icon({type}){const i={grid:<><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></>,compass:<><circle cx="12" cy="12" r="8"/><path d="m15.5 8.5-2.3 4.7-4.7 2.3 2.3-4.7z"/></>,building:<><path d="M4 21V5h16v16M2 21h20M8 9h2m4 0h2M8 13h2m4 0h2"/></>,route:<><circle cx="5" cy="18" r="2"/><circle cx="19" cy="6" r="2"/><path d="M7 18c7 0 2-12 10-12"/></>,file:<><path d="M6 3h9l4 4v14H6zM15 3v5h5M9 13h6m-6 4h6"/></>,briefcase:<><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5h8v2m-13 6h18m-11 0v2h4v-2"/></>,check:<><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></>,send:<><path d="m3 3 18 9-18 9 4-9zM7 12h14"/></>,plus:<><path d="M12 5v14M5 12h14"/></>,arrow:<path d="M5 12h14m-5-5 5 5-5 5"/>,close:<><path d="m6 6 12 12M18 6 6 18"/></>};return <svg className="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{i[type]}</svg>}
-export default function Dashboard(){const navigate=useNavigate();const[message,setMessage]=useState("");const[showAuth,setShowAuth]=useState(()=>localStorage.getItem("cc-auth-popup-dismissed")!=="true");const[authMode,setAuthMode]=useState("signup");const[guide,setGuide]=useState(false);const[messages,setMessages]=useState([{from:"ai",text:"I’m Nova. Tell me about a subject you enjoy, a goal you have, or something that feels unclear. We’ll turn it into a practical next step."}]);const dismiss=()=>{localStorage.setItem("cc-auth-popup-dismissed","true");setShowAuth(false)};const send=(text=message)=>{const clean=text.trim();if(!clean)return;setMessages(x=>[...x,{from:"user",text:clean},{from:"ai",text:"That’s useful context. Start by exploring related careers, then compare the education path, skills, and entry-level roles before deciding."}]);setMessage("")};const auth=mode=>{setAuthMode(mode);setShowAuth(true)};return <div className="dashboard-v2"><aside className="side-v2"><Link className="wordmark" to="/"><Mark small/><span>career<span>copilot</span></span></Link><button className="new-button" onClick={()=>setMessages(messages.slice(0,1))}><Icon type="plus"/>New conversation</button><nav>{nav.map(([name,icon,path],index)=><Link key={name} className={index===0?"selected":""} to={path}><Icon type={icon}/>{name}</Link>)}</nav><div className="side-bottom"><div className="progress-label"><span>PROFILE PROGRESS</span><b>35%</b></div><div className="progress-line"><i/></div><Link className="complete-profile" to="/profile">Complete your profile <Icon type="arrow"/></Link><Link className="account-v2" to="/profile"><span>A</span><div><b>Aanya Sharma</b><small>Career Explorer</small></div><Icon type="arrow"/></Link></div></aside><main className="main-v2"><header className="top-v2"><div className="mobile-wordmark"><Mark small/>career<span>copilot</span></div><div className="top-actions"><button className="text-button" onClick={()=>auth("login")}>Sign in</button><button className="primary-button" onClick={()=>auth("signup")}>Get started <Icon type="arrow"/></button><button className="guide-button" onClick={()=>setGuide(!guide)}>How it works</button></div>{guide&&<div className="guide-popover"><b>Start in three steps</b><span>1. Explore a career</span><span>2. Compare your options</span><span>3. Build your next-step plan</span></div>}</header><section className="hero-v2"><div className="hero-copy"><span className="eyebrow-v2">CAREER INTELLIGENCE FOR STUDENTS</span><h1>Make your next<br/><em>move with clarity.</em></h1><p>One place to explore careers, understand the path ahead, and prepare for opportunities that fit your ambitions.</p><div className="hero-cta"><Link className="primary-button" to="/careers">Explore careers <Icon type="arrow"/></Link><Link className="secondary-button" to="/simulator">View career paths</Link></div></div><div className="loop-visual" aria-hidden="true"><div className="orbit-dot dot-a"/><div className="orbit-dot dot-b"/><svg viewBox="0 0 500 330"><path d="M55 165C115 45 205 45 250 165s135 120 195 0"/><path d="M55 165c60 120 150 120 195 0S385 45 445 165"/></svg><div className="loop-center"><Mark/><span>YOUR<br/>NEXT MOVE</span></div></div></section><section className="overview-v2"><div className="section-heading"><div><span className="eyebrow-v2">YOUR WORKSPACE</span><h2>Choose where to begin</h2></div><Link to="/profile">Edit profile <Icon type="arrow"/></Link></div><div className="action-grid"><Link to="/careers" className="action-card"><span className="card-number">01</span><Icon type="compass"/><h3>Explore careers</h3><p>See what roles involve, the skills they use, and where they can lead.</p><b>Browse careers <Icon type="arrow"/></b></Link><Link to="/colleges" className="action-card"><span className="card-number">02</span><Icon type="building"/><h3>Find your course</h3><p>Compare programmes, branches, admissions, and college options.</p><b>Explore colleges <Icon type="arrow"/></b></Link><Link to="/resumes" className="action-card"><span className="card-number">03</span><Icon type="file"/><h3>Build your resume</h3><p>Create a professional resume and understand how it performs in ATS.</p><b>Open resume studio <Icon type="arrow"/></b></Link></div></section><div className="workspace-grid"><section className="assistant-card"><div className="assistant-head"><div className="nova-logo"><Mark small/></div><div><h2>Ask Nova</h2><p>Your personal career guide</p></div><span className="status"><i/>Available</span></div><div className="message-area">{messages.map((item,index)=><div className={`message-v2 ${item.from}`} key={index}>{item.from==="ai"&&<span className="mini-mark"><Mark small/></span>}<p>{item.text}</p></div>)}</div><div className="prompt-row">{starters.map(item=><button key={item} onClick={()=>send(item)}>{item}</button>)}</div><form className="input-v2" onSubmit={e=>{e.preventDefault();send()}}><input value={message} onChange={e=>setMessage(e.target.value)} placeholder="Ask about careers, degrees, skills, or opportunities..."/><button type="submit" aria-label="Send message"><Icon type="send"/></button></form><small>Career guidance, not a prediction. Your choices stay yours.</small></section><aside className="right-v2"><section className="path-card-v2"><span className="eyebrow-v2">INTERACTIVE CAREER PATHS</span><div className="path-symbol"><span/><span/><span/></div><h2>See the path before you choose it.</h2><p>Explore the education, skills, projects, and entry roles behind a career.</p><button className="light-button" onClick={()=>navigate("/simulator")}>Explore your path <Icon type="arrow"/></button></section><section className="tracker-v2"><div className="tracker-head"><h3>Application tracker</h3><Link to="/applications">View all <Icon type="arrow"/></Link></div><div className="tracker-stats"><div><b>0</b><span>Saved</span></div><div><b>0</b><span>Applied</span></div><div><b>0</b><span>Interview</span></div></div><Link to="/jobs" className="tracker-link">Find opportunities <Icon type="arrow"/></Link></section></aside></div></main>{showAuth&&<div className="auth-overlay-v2" role="dialog" aria-modal="true"><div className="auth-modal-v2"><button className="modal-x" onClick={dismiss} aria-label="Close"><Icon type="close"/></button><div className="modal-mark"><Mark/></div><span className="eyebrow-v2">WELCOME TO CAREERCOPILOT</span><h2>{authMode==="login"?"Welcome back.":"Your future has a starting point."}</h2><p>{authMode==="login"?"Sign in to continue your career journey.":"Create an account to save your discoveries, paths, and career progress."}</p><div className="mode-switch"><button onClick={()=>setAuthMode("signup")} className={authMode==="signup"?"on":""}>Create account</button><button onClick={()=>setAuthMode("login")} className={authMode==="login"?"on":""}>Sign in</button></div><Link className="primary-button modal-cta" to={authMode==="login"?"/login":"/signup"}>{authMode==="login"?"Sign in":"Create free account"}<Icon type="arrow"/></Link><button className="skip-button" onClick={dismiss}>Continue exploring</button></div></div>}</div>}
+/* ── SVG components ── */
+function Mark({ small = false }) {
+  return (
+    <svg className={`infinity-mark${small ? " small" : ""}`} viewBox="0 0 64 38" aria-hidden="true">
+      <path d="M3 19C8 7 18 7 26 19s18 12 23 0c5-12 14-12 18 0" />
+      <path d="M3 19c5 12 15 12 23 0S44 7 49 19c5 12 14 12 18 0" />
+    </svg>
+  );
+}
+
+function Icon({ type }) {
+  const i = {
+    arrow: <path d="M5 12h14m-5-5 5 5-5 5" />,
+    close: <><path d="m6 6 12 12M18 6 6 18" /></>,
+  };
+  return (
+    <svg className="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      {i[type]}
+    </svg>
+  );
+}
+
+/* ── Data ── */
+const NAV = [
+  ["Careers",       "/careers"],
+  ["Resume Studio", "/resumes"],
+  ["Opportunities", "/jobs"],
+  ["Ask Nova",      "/nova"],
+];
+
+const AVATAR_COLORS = ["#5B6BF8","#8B5CF6","#3B82F6","#06B6D4","#10B981"];
+const AVATAR_LETTERS = ["A","R","S","M","P"];
+
+const PARTNERS = [
+  { name: "Internshala", Icon: () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+    </svg>
+  )},
+  { name: "LinkedIn", Icon: () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+      <rect x="2" y="2" width="20" height="20" rx="4"/>
+      <path d="M7 10v7M7 7v.01M12 10v7M12 13a3 3 0 0 1 6 0v4"/>
+    </svg>
+  )},
+  { name: "Unstop", Icon: () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+    </svg>
+  )},
+  { name: "Naukri", Icon: () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+  )},
+];
+
+const STATS = [
+  { label: "Active Students",  value: "+10K",      sub: "Across India" },
+  { label: "Careers Explored", value: "Real-time", sub: "Total career paths" },
+  { label: "Student Trust",    value: "99%",       sub: "Guidance you can rely on" },
+];
+
+/* ── Component ── */
+export default function Dashboard() {
+  const [showAuth, setShowAuth] = useState(
+    () => localStorage.getItem("cc-auth-popup-dismissed") !== "true"
+  );
+  const [authMode, setAuthMode] = useState("signup");
+
+  const dismiss = () => {
+    localStorage.setItem("cc-auth-popup-dismissed", "true");
+    setShowAuth(false);
+  };
+  const openAuth = (mode) => { setAuthMode(mode); setShowAuth(true); };
+
+  return (
+    <div className="landing">
+
+      {/* ── Navbar ── */}
+      <nav className="landing-nav">
+        <Link to="/" className="nav-logo">
+          <Mark small />
+          <span>career<span>copilot</span></span>
+        </Link>
+
+        <div className="nav-center">
+          {NAV.map(([name, path]) => (
+            <Link key={name} to={path}>{name}</Link>
+          ))}
+        </div>
+
+        <div className="nav-right">
+          <button className="btn-ghost" onClick={() => openAuth("login")}>Sign in</button>
+          <button className="btn-pill"  onClick={() => openAuth("signup")}>Get Started</button>
+        </div>
+      </nav>
+
+      {/* ── Hero ── */}
+      <main className="hero-section">
+
+        {/* Background orb layers */}
+        <div className="orb-wrap" aria-hidden="true">
+          <div className="orb-glow-top" />
+          <div className="orb-outer-ring" />
+          <div className="orb-mid-ring" />
+          <div className="orb">
+            <div className="orb-bottom-light" />
+          </div>
+          <div className="streak left" />
+          <div className="streak right" />
+        </div>
+
+        {/* Content */}
+        <div className="hero-content">
+          <div className="pill-badge">
+            <span className="pill-dot" />
+            Career Intelligence, Simplified
+          </div>
+
+          <h1>
+            Your career clarity,<br />
+            built <em>for your future.</em>
+          </h1>
+
+          <p className="hero-sub">
+            One place to explore careers, understand the path ahead,
+            and prepare for opportunities that fit your ambitions.
+          </p>
+
+          <div className="social-proof">
+            <div className="avatars">
+              {AVATAR_LETTERS.map((l, i) => (
+                <span key={i} style={{ background: AVATAR_COLORS[i] }}>{l}</span>
+              ))}
+            </div>
+            <span className="social-text">
+              Trusted already by <b>10,000+</b> students
+            </span>
+          </div>
+
+          <div className="hero-cta">
+            <Link to="/careers" className="cta-primary">
+              Start Exploring <Icon type="arrow" />
+            </Link>
+            <Link to="/simulator" className="cta-secondary">
+              Explore The Platform
+            </Link>
+          </div>
+        </div>
+      </main>
+
+      {/* ── Logos bar ── */}
+      <section className="logos-bar" aria-label="Featured platforms">
+        {PARTNERS.map(({ name, Icon: PIcon }) => (
+          <div key={name} className="logo-item">
+            <span className="logo-icon"><PIcon /></span>
+            <span>{name}</span>
+          </div>
+        ))}
+      </section>
+
+      {/* ── Stats ── */}
+      <section className="stats-section">
+        <div className="stats-bar">
+          {STATS.map(({ label, value, sub }) => (
+            <div key={label} className="stat-card">
+              <span className="stat-label">{label}</span>
+              <span className="stat-value">{value}</span>
+              <span className="stat-sub">{sub}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Auth modal ── */}
+      {showAuth && (
+        <div className="auth-overlay-v2" role="dialog" aria-modal="true">
+          <div className="auth-modal-v2">
+            <button className="modal-x" onClick={dismiss} aria-label="Close">
+              <Icon type="close" />
+            </button>
+
+            <div className="modal-mark"><Mark /></div>
+            <span className="eyebrow-v2">WELCOME TO CAREERCOPILOT</span>
+
+            <h2>{authMode === "login" ? "Welcome back." : "Your future has a starting point."}</h2>
+            <p>
+              {authMode === "login"
+                ? "Sign in to continue your career journey."
+                : "Create an account to save your discoveries, paths, and career progress."}
+            </p>
+
+            <div className="mode-switch">
+              <button onClick={() => setAuthMode("signup")} className={authMode === "signup" ? "on" : ""}>
+                Create account
+              </button>
+              <button onClick={() => setAuthMode("login")} className={authMode === "login" ? "on" : ""}>
+                Sign in
+              </button>
+            </div>
+
+            <Link className="modal-cta" to={authMode === "login" ? "/login" : "/signup"}>
+              {authMode === "login" ? "Sign in" : "Create free account"} <Icon type="arrow" />
+            </Link>
+            <button className="skip-button" onClick={dismiss}>Continue exploring</button>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
