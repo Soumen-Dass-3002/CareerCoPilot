@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Dashboard from "./pages/dashboard";
@@ -6,18 +7,23 @@ import Signup from "./pages/Signup";
 import ExploreCareers from "./pages/ExploreCareers";
 import CareerDetail from "./pages/CareerDetail";
 import CareerCompare from "./pages/CareerCompare";
-import { Applications, ATS, Jobs, Profile, Resumes, Simulator } from "./pages/Platform";
+import Applications from "./pages/platform/Applications";
+import ATS from "./pages/platform/ATS";
+import Jobs from "./pages/platform/Jobs";
+import Profile from "./pages/platform/Profile";
+import Resumes from "./pages/platform/Resumes";
+import Simulator from "./pages/platform/Simulator";
 import Nova from "./pages/Nova";
 
-function App() {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* Website ka first page */}
+        {/* Landing page */}
         <Route path="/" element={<Dashboard />} />
 
-        {/* Auth pages sirf popup/buttons se */}
+        {/* Auth pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/careers" element={<ExploreCareers />} />
@@ -40,6 +46,6 @@ function App() {
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
